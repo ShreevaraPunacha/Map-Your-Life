@@ -1,0 +1,182 @@
+html,
+body {
+    font-family: Arial , sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#map {
+    height: 100%;
+    top: 50px;
+    position: absolute;
+    bottom: 0px;
+    right:0px;
+    left: 0px;
+}
+
+.topHead {
+    background-color: #fafafa;
+    min-height: 50px;
+}
+
+#hamberger {
+    position: absolute;
+    padding: 5px;
+    font-size: 30px;
+    cursor: pointer;
+    color: rgb(107, 78, 78);
+}
+
+.side-nav-open {
+    left: 250px;
+}
+
+#places-search {
+    position: absolute;
+    display:block;
+    right:20px;
+    top:10px;
+    width: 20%;
+    height:30px;
+    border-radius: 1px;
+    background: 
+        url(https://www.google.com/cse/static/images/1x/googlelogo_lightgrey_46x16dp.png) left center no-repeat rgb(255, 255, 255);
+    text-indent: 48px;
+}
+header{
+    display: flex;
+    position: absolute;
+    top: 5px;
+    left: 300px;
+    color: rgba(0,0,0,.54);
+    opacity: 0.9;
+}
+h1{
+    margin: 3px;
+}
+
+.maps-logo {
+    display: inline-block;
+    max-width: 40px;
+    min-width: 40px;
+    height:40px;
+    margin: 2px 16px 2px 0;
+}
+.sideNav {
+    height:100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #bfd9ec;
+    overflow-x : hidden;
+    transition: 0.5s;
+    padding-top: 50px;
+}
+
+.search-place {
+    position: absolute;
+    top:10px;
+    left:10px;
+    cursor: pointer;
+}
+
+#lib-search {
+    width:180px;
+    position: absolute;
+    min-height: 28px;
+    top: 1px;
+    left: 40px;
+    border-radius: 1px;
+    text-indent: 20px;
+}
+
+#my-list {
+    display:none;
+    list-style-type: none;
+    padding: 0;
+    margin:0;
+    position: absolute;
+    left: 40px;
+    top:36px;
+}
+
+@media only screen and (max-width: 450px){
+    .sideNav  { font-size: 14px;}
+}
+
+.placeList {
+   width: 158px;
+    background-color: #f6f6f6;
+    list-style: none;
+    padding :12px;
+    font-size:16px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    margin-top: -1px; /* Prevent double borders */
+    display: block;
+}
+
+.navBar{
+    list-style-type: none;
+    margin:0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #6f8ac5;
+}
+
+.navBar li {
+    font-size: 12px;
+    color: white;
+    text-decoration: none;
+    padding: 8px;
+    text-align: centre;
+    width:67.33px;
+    float:left;
+}
+
+.navBar li:hover {
+     background-color: #384561;
+     color: white;
+}
+
+.active {
+   background-color: #111;
+}
+
+.dropdown {
+    float: left;
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position:absolute;
+    top:80px;
+    background-color: #f9f9f9;
+    min-width: 67.33px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content li {
+    font-size: 12px;
+    color: black;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    float:none;
+    padding: 12px;
+}
+
+.dropdown-content li:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+

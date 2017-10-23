@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Map My Life- Google</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/app.css">
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+        <!-- styles are temporarily put here. has to be moced then!-->
+    </head>
+    <body>
+        <div id="map"></div>
+        <div class="topHead">
+            <span id="hamberger" onclick="openNav()">&#9776;</span>
+            <header>
+                <img class="maps-logo" src="https://www.gstatic.com/images/branding/product/1x/maps_64dp.png"  alt="Google Maps APIs">
+                <h1>Map My Life - Google</h1>
+
+            </header>
+            
+            <input id="places-search" title="Search Google Maps"type="text" placeholder="Maps Search">
+        </div>
+        
+        
+        <div id="mySideNav" class="sideNav" >
+            <div class="search-place">
+                <i class="fa fa-search fa-2x" area-hidden="true"></i>
+                <input id="lib-search" type="text" placeholder="Search Your Library" onkeyup="SearchFilter()" title="Search Your Library">
+                <ul id="my-list"></ul>
+            </div>
+            <ul class="navBar">
+                <li class="active" onClick="set()">Home</li>
+                <div class="dropdown">
+                <li onClick="set()">Places</li>
+                    <div class="dropdown-content">
+                        <li onclick="icon()">Pilgrimage</li>
+                        <li onclick="icon()">Restaurants</li>
+                        <li onclick="icon()">Link 3</li>
+                    </div>
+               </div>
+                </ul>
+            <header>
+                <h4 id="list-title">Coastal Karnataka: Pilgrimage</h4>
+            </header>
+         </div>
+        <script
+             async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBG86L5XZDpfiXZkGmUXBacse8jjggQuwE&libraries=places&v=3&callback=initMap"> 
+        </script>
+        <script src="js/lib/knockout.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/collections.js"></script>
+    </body>
+</html>
