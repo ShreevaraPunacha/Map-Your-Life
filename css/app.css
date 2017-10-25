@@ -29,7 +29,7 @@ body {
     color: rgb(107, 78, 78);
 }
 
-.side-nav-open {
+.sidenavopen {
     left: 250px;
 }
 
@@ -95,7 +95,7 @@ h1{
 }
 
 #my-list {
-    display:none;
+    display:block;
     list-style-type: none;
     padding: 0;
     margin:0;
@@ -109,7 +109,7 @@ h1{
 }
 
 .placeList {
-   width: 158px;
+    width: 158px;
     background-color: #f6f6f6;
     list-style: none;
     padding :12px;

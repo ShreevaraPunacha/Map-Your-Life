@@ -2,6 +2,91 @@ var map;
 
 var markers =[];
 
+var Data = function (data) {
+    this.type = ko.observable(data.type);
+    this.title = ko.observable(data.title);
+    this.position= ko.observable(data.position);
+    this.url = ko.observable(data.url);
+};
+
+var viewModel = function() {
+
+    var self = this;
+
+    self.locationList = ko.observableArray([]);
+
+    locations.forEach(function(data){
+        self.locationList.push(new Data(data));
+    });
+
+    this.classListLength = ko.observable(1);
+
+    this.openNav = function(){
+        return classListLength(document.getElementById("hamberger").classList.length);
+    };
+
+
+    this.listShow = ko.observable(false);
+
+    this.clicked = function () {
+        this.listShow(true);
+    };
+
+
+    
+
+        this.filter = ko.observable("");
+
+        this.filteredLocations = ko.computed(function(){
+        
+            var temporaryLoc = this.locationList();
+
+            var filter = this.filter().toLowerCase();
+            console.log(self.listShow());
+
+            if(self.listShow() == false){
+                return;
+            }else{
+        
+            if(!filter){
+                CreateMarkers(temporaryLoc);
+                return temporaryLoc;
+
+                } else {
+                var output = ko.utils.arrayFilter(temporaryLoc,function(locate){
+                    return stringStartsWith(locate.title().toLowerCase(),filter);
+            });
+            CreateMarkers(output);
+            return output;
+        }
+    }
+    });
+
+    var stringStartsWith = function (string, startsWith) {
+        string = string || "";
+        if (startsWith.length > string.length)
+            return false;
+        return string.substring(0, startsWith.length) === startsWith;
+    };
+
+    
+    this.currentLocation = ko.observableArray("");
+
+    this.setLoc = function (clickedLoc) {
+        console.log('I am run');
+        self.listShow(false);
+        self.currentLocation([]);
+        self.currentLocation().push(clickedLoc);
+        CreateMarkers(self.currentLocation());
+    };
+
+
+};
+ko.applyBindings(viewModel);
+
+
+
+
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -12,39 +97,60 @@ function initMap() {
         zoom: 10
     });
 
-    var largeInfoWindow = new google.maps.InfoWindow();
-    var bounds = new google.maps.LatLngBounds();
+    CreateMarkers(locationList());
 
-    //Create the "highlighted location" marker color when the user hovers over it
-    var highlightedIcon = makeMarkerIcon('FFFF24');
+     var searchBox = new google.maps.places.SearchBox(
+         document.getElementById('places-search')
+     );
+
+     // Bias the SearchBox results towards current map's viewport.
+     map.addListener('bounds_changed', function () {
+         searchBox.setBounds(map.getBounds());
+     });
+
+     searchBox.addListener('places_changed', function () {
+         console.log("place changed");
+         searchForPlaces(this);
+     });
     
+} 
+
+ 
+
+function CreateMarkers(locationsArray) {
     //create markers
     var place_id = -1;
-    locations.forEach(function(location){
-        place_id += 1;
 
+    console.log("inside Create Markers");
+
+    var largeInfoWindow = new google.maps.InfoWindow();
+
+    var bounds = new google.maps.LatLngBounds();
+
+    console.log(locationsArray.length);
+
+    markers.forEach(function(marker){
+        marker.setMap(null);
+    })
+
+    locationsArray.forEach(function (location) {
+        place_id += 1;
         var marker = new google.maps.Marker({
-            position: location.position,
+            position: location.position(),
             map: map,
-            title: location.title,
+            title: location.title(),
             animation: google.maps.Animation.DROP,
-            id:place_id,
+            id: place_id,
         });
 
-        var ul = document.getElementById("my-list");
-
-        var li= document.createElement("li");
-
-        li.setAttribute("id",place_id);
-        li.setAttribute("class","placeList");
-
-        li.appendChild(document.createTextNode(location.title));
-
-        ul.appendChild(li);
 
         markers.push(marker);
 
-        li.addEventListener('click', function () {
+       
+
+        //Create the "highlighted location" marker color when the user hovers over it
+        var highlightedIcon = makeMarkerIcon('FFFF24');
+        /**       li.addEventListener('click', function () {
             var place = this.getAttribute("id");
             markers[place].setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function(){
@@ -64,31 +170,18 @@ function initMap() {
         marker.addListener('click', function(){
             populateInfoWindow(this,largeInfoWindow,location.url);
         });
+        **/
 
         bounds.extend(marker.position);
     });
-
     map.fitBounds(bounds);
-
-        var searchBox = new google.maps.places.SearchBox(
-            document.getElementById('places-search')
-        );
-
-        // Bias the SearchBox results towards current map's viewport.
-        map.addListener('bounds_changed', function () {
-            searchBox.setBounds(map.getBounds());
-        });
-
-        searchBox.addListener('places_changed',function(){
-            console.log("place changed");
-            searchForPlaces(this);
-        });
-
+    }
 
 
     
 
-}
+    
+
 
 function populateInfoWindow(marker, infoWindow, url) {
     if (infoWindow.marker != marker) {
@@ -109,6 +202,8 @@ function makeMarkerIcon(markerColor) {
     return markerImage;
 }
 
+
+/**
 function openNav(){
     document.getElementById("mySideNav").style.width = "250px";
     document.getElementById("map").style.left = "250px";
@@ -122,6 +217,7 @@ else{
     document.getElementById("map").style.left = "0";
 }
 }
+**/
 
 
 function SearchPlace(){
@@ -228,26 +324,4 @@ function getPlacesDetails(marker, infoWindow) {
             console.log("status: not OK");
         }
     });
-}
-
-function SearchFilter(){
-    var input,filter,ul,li,i;
-    input = document.getElementById("lib-search");
-    filter = input.value.toUpperCase();
-    ul = document.getElementById("my-list");
-    ul.style.display= "block";
-    li = ul.getElementsByTagName('li');
-    if(filter == ""){
-        ul.style.display ="none";
-    }
-    
-    //loop through all list items , and hide those who don't match the search query
-    for(i=0 ; i < li.length ; i++){
-        var place = li[i].innerHTML;
-        if(place.toUpperCase().indexOf(filter) > -1){
-            li[i].style.display ="";
-        }else{
-            li[i].style.display = "none";
-        }
-    }
 }

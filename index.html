@@ -8,9 +8,9 @@
         <!-- styles are temporarily put here. has to be moced then!-->
     </head>
     <body>
-        <div id="map"></div>
+        <div id="map" data-bind="style:{ left: classListLength() === 0 ? '250px':'0px'}"></div>
         <div class="topHead">
-            <span id="hamberger" onclick="openNav()">&#9776;</span>
+            <span id="hamberger" data-bind="click:openNav, css:{sidenavopen: classListLength() === 0} ">&#9776;</span>
             <header>
                 <img class="maps-logo" src="https://www.gstatic.com/images/branding/product/1x/maps_64dp.png"  alt="Google Maps APIs">
                 <h1>Map My Life - Google</h1>
@@ -21,11 +21,13 @@
         </div>
         
         
-        <div id="mySideNav" class="sideNav" >
+        <div id="mySideNav" class="sideNav"  data-bind="style:{width: classListLength() === 0 ? '250px': '0px'}">
             <div class="search-place">
                 <i class="fa fa-search fa-2x" area-hidden="true"></i>
-                <input id="lib-search" type="text" placeholder="Search Your Library" onkeyup="SearchFilter()" title="Search Your Library">
-                <ul id="my-list"></ul>
+                <input id="lib-search" type="text" placeholder="Search Your Library" title="Search Your Library" data-bind="value:filter, valueUpdate: 'afterkeydown', click :clicked">
+                <ul id="my-list"data-bind="foreach: filteredLocations">
+                    <li class="placeList" data-bind="text: title ,click : setLoc, visible: listShow "> </li>
+                </ul>
             </div>
             <ul class="navBar">
                 <li class="active" onClick="set()">Home</li>
@@ -45,8 +47,9 @@
         <script
              async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBG86L5XZDpfiXZkGmUXBacse8jjggQuwE&libraries=places&v=3&callback=initMap"> 
         </script>
+        <script src="js/collections.js"></script>
         <script src="js/lib/knockout.js"></script>
         <script src="js/app.js"></script>
-        <script src="js/collections.js"></script>
+        
     </body>
 </html>
